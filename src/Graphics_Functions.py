@@ -247,7 +247,7 @@ def show_comp2():
         bc = ax2.bar(0, height, width, bottom=bottom, color='C0', label=label,
                     alpha=0.1 + 0.18 * j)
         ax2.bar_label(bc, labels=[f"{height:.0%}"], label_type='center')
-    ax2.set_title('Idade dos que usam offline')
+    ax2.set_title('Idade dos que gostaram das músicas')
     ax2.legend()
     ax2.axis('off')
     ax2.set_xlim(- 2.5 * width, 2.5 * width)

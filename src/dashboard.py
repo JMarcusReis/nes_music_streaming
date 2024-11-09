@@ -280,7 +280,7 @@ elif atual == 'Análise de Relacionamento':
         <h2 style="font-size: 40px; text-align: left;">Observações</h2>
     """, unsafe_allow_html=True)
     st.markdown("""
-    Temos que as faixas etárias que menos curte as músicas recomendadas é:
+    Temos que as faixas etárias que mais curtem as músicas recomendadas é:
     * 16-24 anos
     * 25-32 anos
     * 33-40 anos
