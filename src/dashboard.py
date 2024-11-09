@@ -61,7 +61,7 @@ onebit_logo = f"""
 """
 
 # Leitura do dataset e pré-processamento
-df = pd.read_csv(r'C:\Users\reis_\Downloads\music_streaming.csv')
+df = pd.read_csv(r"music_streaming.csv")
 df['date'], df['time'] = pd.to_datetime(df['date'], format='%Y-%m-%d'), pd.to_datetime(df['time'], format='%H:%M:%S')
 df['month'], df['hour'] = df['date'].dt.month, df['time'].dt.hour 
 
