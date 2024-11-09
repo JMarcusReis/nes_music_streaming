@@ -1,103 +1,111 @@
-# Dashboard de Análise de Streaming de Música
+# Streaming de Música - Dashboard de Análise
 
-Este projeto tem como objetivo a análise de dados de streaming de música utilizando o **Streamlit**, **Matplotlib** e **Seaborn**. Através deste dashboard interativo, é possível explorar diversos aspectos do comportamento dos usuários em relação ao consumo de música.
+Este projeto apresenta um **dashboard interativo** criado com o Streamlit para análise de dados de um serviço de streaming de música. Utilizando o **Python**, bibliotecas como `pandas`, `matplotlib`, `seaborn` e funções customizadas, a aplicação permite realizar diversas análises sobre os dados de streaming e gerar insights sobre os comportamentos dos usuários.
 
-## Descrição
+## Funcionalidades
 
-O dashboard utiliza um dataset de streaming de música para gerar gráficos e insights sobre os seguintes aspectos:
+O dashboard está dividido em várias seções, cada uma com diferentes tipos de análise. O usuário pode selecionar as opções no menu lateral para explorar as seguintes análises:
 
-- **Horários de pico de reprodução**
-- **Distribuição de gêneros e subgêneros**
-- **Reações dos usuários** (curtidas ou não)
-- **Qualidade do stream**
-- **Tipos de assinaturas**
-- **Plataformas utilizadas**
-- **Análise temporal** (mês de reprodução)
-- **Comparação entre faixas etárias e gêneros musicais**
-- **Análise do uso do modo offline vs online por faixa etária**
+1. **Introdução**
+2. **Análise Temporal**
+3. **Análise de Distribuição**
+4. **Análise de Relacionamento**
+5. **Análise Categórica**
+6. **Solução**
+7. **Informações sobre o Grupo**
 
-## Pré-requisitos
+### 1. Introdução
 
-Para rodar este projeto, é necessário ter o Python 3.x e os seguintes pacotes instalados:
+Apresenta uma introdução ao conceito do projeto, explicando a proposta de um sistema de recomendação de músicas para plataformas de streaming.
 
-- **streamlit**
-- **pandas**
-- **matplotlib**
-- **seaborn**
-- **numpy**
-- **base64**
+### 2. Análise Temporal
 
-Você pode instalar as dependências usando o `pip`:
+Explora a evolução temporal das reproduções de músicas ao longo do tempo. Inclui gráficos de horários de pico e frequência de reproduções por mês.
+
+- **Horários de pico de visualizações**
+- **Frequência de reproduções por mês (2023)**
+
+### 3. Análise de Distribuição
+
+Examina como a distribuição dos dados está distribuída entre diferentes faixas etárias e durações das músicas. Inclui os seguintes gráficos:
+
+- **Histograma de reproduções por faixa etária**
+- **Histograma de duração das músicas e suas reproduções**
+
+### 4. Análise de Relacionamento
+
+Investiga as relações entre diferentes variáveis, como gêneros musicais preferidos por diferentes faixas etárias, comparando preferências de música entre os usuários e outros fatores.
+
+- **Comparação entre gêneros escutados e idades dos usuários**
+- **Comparação entre idades dos usuários e avaliação das músicas**
+
+### 5. Análise Categórica
+
+Examina as categorias mais relevantes, como gêneros e subgêneros musicais, e a análise de curtidas ou não curtidas nas músicas.
+
+- **Gêneros mais escutados**
+- **Subgêneros mais escutados**
+- **Plataformas mais utilizadas**
+
+### 6. Solução
+
+Apresenta uma proposta de solução para melhorar as recomendações de músicas, baseando-se em como as plataformas como **Spotify** e **YouTube** utilizam algoritmos personalizados para fornecer recomendações.
+
+### 7. Informações sobre o Grupo
+
+Exibe informações sobre os membros do grupo responsável pelo desenvolvimento do projeto, suas funções e contribuições.
+
+## Tecnologias Utilizadas
+
+- **Streamlit**: Para criar a interface interativa do dashboard.
+- **Pandas**: Para manipulação e análise de dados.
+- **Matplotlib** e **Seaborn**: Para visualização dos dados.
+- **Base64**: Para exibição de imagens no Streamlit sem precisar de arquivos externos.
+- **Python 3.x**
+
+## Como Rodar
+
+1. Instale as dependências:
+
+```bash
+pip install streamlit pandas matplotlib seaborn
 ```
-pip install streamlit pandas matplotlib seaborn numpy
+2. Execute o aplicativo Streamlit:
+```bash
+streamlit run dashboard.py
 ```
-## Como rodar
+3. O aplicativo será iniciado no seu navegador, onde você poderá interagir com o dashboard e explorar os dados.
 
-1. Clone o repositório para sua máquina local.
-2. Certifique-se de que o dataset `music_streaming.csv` esteja disponível na mesma pasta que o script.
-3. No terminal, navegue até o diretório onde o script está localizado e execute o seguinte comando para iniciar o dashboard:
-```
-python -m streamlit run dashboard.py
-```
+## Estrutura do Código
 
-O Streamlit abrirá o dashboard em seu navegador.
+### Funções
 
-## Funcionalidades do Dashboard
+`img_to_base64(caminho_imagem: str) -> str`
 
-### 1. **Visão Geral de Gêneros**
+Função que converte uma imagem para formato Base64, permitindo exibi-la diretamente no Streamlit.
 
-- **Objetivo:** Exibir a distribuição de gêneros musicais presentes no dataset.
-- **Componentes:**
-  - **Gráfico de barras** mostrando a quantidade de streamings por gênero musical.
+### Pré-processamento de Dados
 
-### 2. **Análise de Horário de Pico**
+* O arquivo CSV `music_streaming.csv` é carregado e processado, com as colunas `date` e `time` sendo convertidas para o formato datetime.
 
-- **Objetivo:** Identificar os horários de pico de streaming.
-- **Componentes:**
-  - **Gráfico de linha** mostrando o número de streamings ao longo das horas do dia.
+* A extração do mês e da hora a partir da data e hora é realizada para análise temporal.
 
-### 3. **Reações dos Usuários**
+### Barra Lateral do Streamlit
 
-- **Objetivo:** Analisar as reações dos usuários, como curtidas ou não.
-- **Componentes:**
-  - **Gráfico de barras** mostrando a quantidade de reações positivas e negativas para cada gênero.
+A barra lateral permite que o usuário escolha entre diferentes gráficos e seções do dashboard. Cada opção carrega um conjunto de análises específicas, incluindo visualizações gráficas e interpretações dos dados.
 
-### 4. **Comparação entre Faixa Etária e Gêneros Musicais**
+---
 
-- **Objetivo:** Analisar como diferentes faixas etárias se comportam em relação aos gêneros musicais.
-- **Componentes:**
-  - **Gráfico de barras empilhadas** mostrando a distribuição de faixas etárias para cada gênero musical.
+## Licença
 
-### 5. **Qualidade de Streaming**
+Este projeto está sob a licença *MIT*. Veja o arquivo LICENSE para mais informações.
 
-- **Objetivo:** Mostrar como os usuários se comportam em relação à qualidade do streaming.
-- **Componentes:**
-  - **Gráfico de barras** mostrando a quantidade de streamings por qualidade.
+---
 
-### 6. **Tipos de Assinatura**
+## Contribuidores
 
-- **Objetivo:** Exibir a distribuição dos tipos de assinaturas dos usuários.
-- **Componentes:**
-  - **Gráfico de barras** mostrando a quantidade de streamings por tipo de assinatura (premium, gratuito, etc.).
-
-### 7. **Plataformas Utilizadas**
-
-- **Objetivo:** Mostrar a popularidade das plataformas usadas para o streaming de músicas.
-- **Componentes:**
-  - **Gráfico de barras** mostrando a quantidade de streamings por plataforma.
-
-### 8. **Análise Temporal**
-
-- **Objetivo:** Mostrar a distribuição de streamings ao longo dos meses.
-- **Componentes:**
-  - **Gráfico de linha** mostrando a quantidade de streamings por mês.
-
-### 9. **Modo Offline vs Online por Faixa Etária**
-
-- **Objetivo:** Comparar o uso do modo offline vs online em diferentes faixas etárias.
-- **Componentes:**
-  - **Gráfico de barras empilhadas** mostrando a distribuição entre os modos offline e online por faixa etária.
-
-## Considerações Finais
-
-Este projeto visa proporcionar uma visão mais clara e detalhada sobre os hábitos de consumo de música dos usuários, permitindo identificar padrões e tendências em tempo real. O uso de ferramentas como **Streamlit**, **Seaborn** e **Matplotlib** torna a análise interativa e visualmente atraente.
+* Gustavo Felipe: Relatório, Roteiro.
+* João Marcus: Repositório, Dashboard e estilização, Análise Temporal, de Distribuição e Categórica, Vídeo.
+* Lorena Oliveira: Pesquisa, Relatório, Roteiro, Vídeo.
+* Rodrigo Levino: Roteiro, Análise Temporal, Vídeo.
+* Ruan Gois: Análise de Relação, Roteiro.
