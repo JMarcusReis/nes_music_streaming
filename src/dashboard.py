@@ -6,9 +6,6 @@ import numpy as np
 import seaborn as sns
 import Graphics_Functions as graf
 import base64
-import matplotlib
-
-matplotlib.use('Agg')
 
 # Função para converter imagem para Base64
 def img_to_base64(caminho_imagem: str) -> str:
@@ -39,6 +36,21 @@ img3 = img_to_base64(img3)
 img4 = r"C:\Users\reis_\Desktop\Codes\.vscode\Python\NES\P_P\Trabalho_1\nes_music_streaming\src\assets\Algoritmo_personalizado.png"
 img4 = img_to_base64(img4)
 
+Joao = r"C:\Users\reis_\Desktop\Codes\.vscode\Python\NES\P_P\Trabalho_1\nes_music_streaming\src\assets\JoaoM.png"
+Joao = img_to_base64(Joao)
+
+Gustavo = r"C:\Users\reis_\Desktop\Codes\.vscode\Python\NES\P_P\Trabalho_1\nes_music_streaming\src\assets\Gustavo.png"
+Gustavo = img_to_base64(Gustavo)
+
+Ruan = r"C:\Users\reis_\Desktop\Codes\.vscode\Python\NES\P_P\Trabalho_1\nes_music_streaming\src\assets\Ruan.png"
+Ruan = img_to_base64(Ruan)
+
+Lorena = r"C:\Users\reis_\Desktop\Codes\.vscode\Python\NES\P_P\Trabalho_1\nes_music_streaming\src\assets\Lorena.png"
+Lorena = img_to_base64(Lorena)
+
+Rodrigo = r"C:\Users\reis_\Desktop\Codes\.vscode\Python\NES\P_P\Trabalho_1\nes_music_streaming\src\assets\Rodrigo.png"
+Rodrigo = img_to_base64(Rodrigo)
+
 # HTML para a exibição do logo Onebit
 onebit_logo = f"""
     <div style="text-align: center; padding: 20px;">
@@ -51,127 +63,291 @@ onebit_logo = f"""
 # Leitura do dataset e pré-processamento
 df = pd.read_csv(r'C:\Users\reis_\Downloads\music_streaming.csv')
 df['date'], df['time'] = pd.to_datetime(df['date'], format='%Y-%m-%d'), pd.to_datetime(df['time'], format='%H:%M:%S')
-df['month'], df['hour'] = df['date'].dt.month, df['time'].dt.hour
-df = df.drop_duplicates(subset='user_id')  # Remove registros duplicados com o mesmo user_id
+df['month'], df['hour'] = df['date'].dt.month, df['time'].dt.hour 
 
 # Inicialização do estado das variáveis
-if 'show_horariospico' not in st.session_state:
-    st.session_state.show_horariospico = False
-if 'show_genres' not in st.session_state:
-    st.session_state.show_genres = False
-if 'show_subgenres' not in st.session_state:
-    st.session_state.show_subgenres = False
-if 'show_liked' not in st.session_state:
-    st.session_state.show_liked = False
-if 'show_streamquality' not in st.session_state:
-    st.session_state.show_streamquality = False
-if 'show_subtype' not in st.session_state:
-    st.session_state.show_subtype = False
-if 'show_platf' not in st.session_state:
-    st.session_state.show_platf = False
-if 'show_month' not in st.session_state:
-    st.session_state.show_month = False
-if 'show_comp_idade_genre' not in st.session_state:
-    st.session_state.show_comp_age_genre = False
-if 'show_comp_onl_age' not in st.session_state:
-    st.session_state.show_comp_onl_age = False
-
-# Funções para controlar a exibição dos gráficos
-def toggle_horariospico():
-    st.session_state.show_horariospico = not st.session_state.show_horariospico
-def toggle_genres():
-    st.session_state.show_genres = not st.session_state.show_genres
-def toggle_subgenres():
-    st.session_state.show_subgenres = not st.session_state.show_subgenres
-def toggle_liked():
-    st.session_state.show_liked = not st.session_state.show_liked
-def toggle_streamquality():
-    st.session_state.show_streamquality = not st.session_state.show_streamquality
-def toggle_subtype():
-    st.session_state.show_subtype = not st.session_state.show_subtype
-def toggle_platf():
-    st.session_state.show_platf = not st.session_state.show_platf
-def toggle_month():
-    st.session_state.show_month = not st.session_state.show_month
-def toggle_heatmap():
-    st.session_state.show_comp_age_genre = not st.session_state.show_comp_age_genre
-def toggle_heatmap2():
-    st.session_state.show_comp_onl_age = not st.session_state.show_comp_onl_age 
+if 'selected_graph' not in st.session_state:
+    st.session_state.selected_graph = 'Introdução'
 
 # Criação da barra lateral no Streamlit
 st.sidebar.markdown(onebit_logo, unsafe_allow_html=True)  # Exibe o logo Onebit
 st.sidebar.title('Central de comando')
-menu = st.sidebar.radio("Escolha uma opção", ('Introdução', 'Gráficos do Dataset', 'Solução'))
+
+# Opções de gráficos
+graph_options = [
+    'Introdução',
+    'Análise temporal',
+    'Análise de Distribuição',
+    'Análise de Relacionamento',
+    'Análise Categórica',
+    'Solução',
+    'Informações sobre o grupo'
+]
+
+# Seleção do gráfico na barra lateral
+atual = st.sidebar.selectbox('Escolha uma opção', graph_options)
+st.session_state.selected_graph = atual
 
 # Se o usuário escolheu a opção 'Introdução'
-if menu == 'Introdução':
+if atual == 'Introdução':
     st.title('Bem-vindo ao Dashboard do Streaming de Música!')
-    st.markdown("""
-        <h4 style="font-size: 25px; text-align: justify;">
-            Somos alunos do Novo Ensino Suplementar (NES). Este trabalho é destinado à matéria de Prática e Pesquisa. 
-            A pesquisa se baseia no Data Shark, e nosso foco é analisar o dataset de Streaming de Música, com a criação de gráficos usando a biblioteca matplotlib.
+    st.markdown("""<h4 style="font-size: 25px; text-align: justify;">
+            O mundo atual em que vivemos está em constante mudança,  agora, não é mais necessário que uma pessoa fique 
+            olhando a programação de um canal, pois os serviços de streaming permitem que ela assista quando e onde quiser. 
+            O mesmo vale para as rádios, onde as pessoas não precisam ficar ouvindo as músicas das quais não gostam, 
+            pois basta colocar sua música preferida para tocar.
         </h4>""", unsafe_allow_html=True)
 
     st.markdown("""<h4 style="font-size: 25px; text-align: justify;">
-            Através dessa análise, buscamos identificar problemas ou oportunidades no comportamento de usuários no streaming de música.
-            As análises incluem aspectos como análise temporal, distribuição, relacionamentos e categorias. 
-            Essas análises ajudaram a identificar áreas de melhoria.
+            Assim, criamos nossa própria “ponte”, que facilita com que a pessoa não se 
+            preocupe com músicas das quais não gosta em nosso streaming, e assim ela pode aproveitar o seu momento de lazer 
+            sem problemas. Pensando nisso, visando a obtenção de melhores resultados de recomendação, o grupo 1-Bit, 
+            busca a excelência em resultados de plataformas de streaming de música idealizou o Algoritmo Personalizado.
         </h4>""", unsafe_allow_html=True)
 
-# Se o usuário escolheu a opção 'Gráficos do Dataset'
-elif menu == 'Gráficos do Dataset':
-    st.title('Gráficos!')
+# Se o usuário escolheu qualquer gráfico do dataset
+elif atual == 'Análise temporal':
+    # Título da Análise Temporal
+    st.markdown("""
+        <h2 style="font-size: 40px; text-align: left;">Análise Temporal</h2>
+    """, unsafe_allow_html=True)
+    
+    # Introdução
+    st.markdown("""
+        <h4 style='font-size: 25px; text-align: justify;'>
+            Com a análise temos os seguintes gráficos sobre análise temporal:
+        </h4>
+    """, unsafe_allow_html=True)
+    
+    # Gráfico de Horários de pico de visualizações
+    st.markdown("""
+        <h2 style="font-size: 40px; text-align: left;">
+            Horários de pico de visualizações
+        </h2>
+    """, unsafe_allow_html=True)
+    graf.show_picos_idade()  # Chama a função para exibir o gráfico de horários
+    
+    # Observações sobre os horários de pico
+    st.markdown("""
+        <h2 style="font-size: 40px; text-align: left;">Observações</h2>
+    """, unsafe_allow_html=True)
+    st.markdown("""
+        Horários com mais visualizações:
+        1) 22h
+        2) 21h
+        3) 17h
+    """)
+    st.markdown("---")
+    
+    st.markdown("""
+        <h2 style="font-size: 40px; text-align: left;">Frequência de reproduções por mês do ano de 2023</h2>
+    """, unsafe_allow_html=True)
+    graf.show_month()
+    st.markdown("""
+        <h2 style="font-size: 40px; text-align: left;">Observações</h2>
+    """, unsafe_allow_html=True)
+    st.markdown("""
+        Os meses de pico são:
+        * Janeiro
+        * Março
+        * Julho""")
+    st.markdown("---")
+    st.markdown("""
+        <h2 style="font-size: 40px; text-align: left;">Conclusão</h2>
+    """, unsafe_allow_html=True)
+    st.markdown("""Além disso, busque aumentar as propagandas do streaming nos meses de pico.""")
+    
+elif atual == 'Análise de Distribuição':
+    st.markdown("""
+        <h2 style="font-size: 40px; text-align: left;">Análise de Distribuição</h2>
+    """, unsafe_allow_html=True)
+    
+    # Introdução
+    st.markdown("""
+        <h4 style='font-size: 25px; text-align: justify;'>
+            Com a análise temos os seguintes gráficos sobre a Análise de Distribuição:
+        </h4>
+    """, unsafe_allow_html=True)
 
-    col1, col2 = st.columns(2)
+    st.markdown("""
+        <h2 style="font-size: 40px; text-align: left;">
+            Histograma de reproduções por faixa etária
+        </h2>
+    """, unsafe_allow_html=True)
+    graf.show_histidades()  # Chama a função para exibir o histograma
+    
+    # Observações sobre as faixas etárias que mais reproduzem
+    st.markdown("""
+        <h2 style="font-size: 40px; text-align: left;">Observações</h2>
+    """, unsafe_allow_html=True)
+    st.markdown("""
+        Faixas etárias que mais reproduzem músicas:
+        1) 16-24 anos
+        2) 41-48 anos
+        3) 57-64 anos
+    """)
 
-    # Botões para ativar gráficos
-    with col1:
-        if st.button('Horários de Pico'):
-            toggle_horariospico()
-        if st.button("Gêneros Escutados"):
-            toggle_genres()
-        if st.button("Subgêneros Escutados"):
-            toggle_subgenres()
-        if st.button("Likes nas Reproduções"):
-            toggle_liked()
-        if st.button("Qualidade de Stream"):
-            toggle_streamquality()
-    with col2:
-        if st.button('Tipos de Assinaturas'):
-            toggle_subtype()
-        if st.button('Plataformas Usadas'):
-            toggle_platf()
-        if st.button("Quantidade de Reproduções por Mês"):
-            toggle_month()
-        if st.button("Comparação entre Idade e Gênero Escutado"):
-            toggle_heatmap()
-        if st.button("Comparação entre Estado de Wifi e Idade"):
-            toggle_heatmap2()
+    st.markdown("---")
 
-    # Exibe os gráficos conforme o estado de cada variável
-    if st.session_state.show_horariospico:
-        graf.show_picos_idade()
-    if st.session_state.show_genres:
-        graf.show_genres()
-    if st.session_state.show_subgenres:
-        graf.show_subgenres()
-    if st.session_state.show_liked:
-        graf.show_liked()
-    if st.session_state.show_streamquality:
-        graf.show_streamqual()
-    if st.session_state.show_subtype:
-        graf.show_subtypes()
-    if st.session_state.show_platf:
-        graf.show_platf()
-    if st.session_state.show_month:
-        graf.show_month()
-    if st.session_state.show_comp_age_genre:
-        graf.show_comp1()
-    if st.session_state.show_comp_onl_age:
-        graf.show_comp2()
+    st.markdown("""
+        <h2 style="font-size: 40px; text-align: left;">
+            Histograma de duração em segundos das músicas e suas reproduções
+        </h2>
+    """, unsafe_allow_html=True)
+
+    graf.show_musicduration()
+
+    st.markdown("""
+        <h2 style="font-size: 40px; text-align: left;">Observações</h2>
+    """, unsafe_allow_html=True)
+
+    st.markdown("""
+    Músicas de 200 à 250 segundos são mais reproduzidas do que as outras
+    """)
+    st.markdown("---")
+    st.markdown("""
+        <h2 style="font-size: 40px; text-align: left;">Conclusões</h2>
+    """, unsafe_allow_html=True)
+    st.markdown("""
+        Foque mais em propagandas para as faixas etárias que mais consomem música no streaming, 
+        e também priorize a progapanda de músicas na média de duração entre 200 à 250 segundos.
+    """)
+
+elif atual == 'Análise de Relacionamento':
+    st.markdown("""
+        <h2 style="font-size: 40px; text-align: left;">Análise de Relacionamento</h2>
+    """, unsafe_allow_html=True)
+
+    st.markdown("""
+        <h4 style='font-size: 25px; text-align: justify;'>
+            Com a análise temos os seguintes gráficos sobre a Análise de Relacionamento:
+        </h4>
+    """, unsafe_allow_html=True)
+
+    # Gráfico de Comparação entre gêneros escutados e idades dos usuários
+    st.markdown("""
+        <h2 style="font-size: 40px; text-align: left;">
+            Comparação entre gêneros escutados e idades dos usuários
+        </h2>
+    """, unsafe_allow_html=True)
+    graf.show_comp1()  # Chama a função para exibir o gráfico de comparação entre gêneros e idades
+    
+    # Observações sobre gêneros e faixas etárias
+    st.markdown("""
+        <h2 style="font-size: 40px; text-align: left;">Observações</h2>
+    """, unsafe_allow_html=True)
+    st.markdown("""
+        Gêneros preferidos pelas faixas etárias:
+        * 16-24: Pop
+        * 25-32: Rock
+        * 33-40: Rock
+        * 41-48: MPB
+        * 49-56: Jazz
+        * 57-64: MPB
+    """)
+    st.markdown("---")
+
+    st.markdown("""
+        <h2 style="font-size: 40px; text-align: left;">
+            Comparação entre idades dos usuários e review nas músicas
+        </h2>
+    """, unsafe_allow_html=True)
+    graf.show_comp2()
+    st.markdown("""
+        <h2 style="font-size: 40px; text-align: left;">Observações</h2>
+    """, unsafe_allow_html=True)
+    st.markdown("""
+    Temos que as faixas etárias que menos curte as músicas recomendadas é:
+    * 16-24 anos
+    * 25-32 anos
+    * 33-40 anos
+    """)
+    st.markdown("---")
+    st.markdown("""
+        <h2 style="font-size: 40px; text-align: left;">Conclusões</h2>
+    """, unsafe_allow_html=True)
+    st.markdown("""
+    Uma possível solução seria recomendar mais os gêneros mais curtidos para pessoas das
+    faixas etárias. Além disso também melhorar as recomendações das músicas para as pessoas que
+    estão dando reviews negativas sobre as músicas que são recomendadas.
+    """)
+    
+
+elif atual == 'Análise Categórica':
+    st.markdown("""
+        <h2 style="font-size: 40px; text-align: left;">Análise Categórica</h2>
+    """, unsafe_allow_html=True)
+
+    st.markdown("""
+        <h4 style='font-size: 25px; text-align: justify;'>
+            Com a análise temos os seguintes gráficos sobre a Análise Categórica:
+        </h4>
+    """, unsafe_allow_html=True)
+
+    st.markdown("""
+        <h2 style="font-size: 40px; text-align: left;">Gêneros mais escutados</h2>
+    """, unsafe_allow_html=True)
+
+    graf.show_genres()
+
+    st.markdown("""
+        <h2 style="font-size: 40px; text-align: left;">Observações</h2>
+    """, unsafe_allow_html=True)
+
+    st.markdown("""
+    Podemos ver que os gêneros Pop, MPB e Rock são os mais escutados no geral, 
+    com porcentagens de 22.1%, 20.9% e 18.7% respectivamente
+    """)
+    st.markdown("---")
+
+    st.markdown("""
+        <h2 style="font-size: 40px; text-align: left;">Subgêneros mais escutados</h2>
+    """, unsafe_allow_html=True)
+    graf.show_subgenres()
+    st.markdown("""
+        <h2 style="font-size: 40px; text-align: left;">Observações</h2>
+    """, unsafe_allow_html=True)
+    st.markdown("""
+    Podemos ver que o Kpop, Forró e Alternative são os subgêneros mais escutados no geral,
+    com porcentagens de 8.2%, 7.1% e 6.9% respectivamente.
+    """)
+    st.markdown("---")
+    st.markdown("""
+        <h2 style="font-size: 40px; text-align: left;">Reviews das músicas</h2>
+    """, unsafe_allow_html=True)
+    graf.show_liked()
+    st.markdown("""
+        <h2 style="font-size: 40px; text-align: left;">Observações</h2>
+    """, unsafe_allow_html=True)
+    st.markdown("""
+    Podemos ver que temos uma baixa quantidade de curtidas em relação a não curtidas,
+    de aproximadamente 1 a cada 5 reviews são curtidas, algo preocupante.
+    """)
+    st.markdown("---")
+    
+    st.markdown("""
+        <h2 style="font-size: 40px; text-align: left;">Plataformas mais utilizadas</h2>
+    """, unsafe_allow_html=True)
+    graf.show_platf()
+    st.markdown("""
+        <h2 style="font-size: 40px; text-align: left;">Observações</h2>
+    """, unsafe_allow_html=True)
+    st.markdown("""
+    Podemos ver que as plataformas mobile e web são as que mais tem reproduções.
+    """)
+
+    st.markdown("---")
+    st.markdown("""
+        <h2 style="font-size: 40px; text-align: left;">Conclusões</h2>
+    """, unsafe_allow_html=True)
+    st.markdown("""
+    Podemos ver que temos um grande problema com a quantidade de curtidas, então
+    uma forma de resolução seria melhorando as recomendações para os usuários.
+    """)
+    
 
 # Se o usuário escolheu a opção 'Solução'
-elif menu == 'Solução':
+elif atual == 'Solução':
     st.title("A Solução")
     
     # Descrição da solução com formatação adequada
@@ -252,3 +428,46 @@ elif menu == 'Solução':
             alt='Diagrama do algoritmo personalizado'>
     </div>
 """, unsafe_allow_html=True)
+
+elif atual == 'Informações sobre o grupo':
+    integrantes = [
+    {"nome": "Gustavo Felipe", "imagem": Gustavo, "funcoes": ["Relatório", "Roteiro"]},
+    {"nome": "João Marcus", "imagem": Joao, "funcoes": ["Repositório", "Dashboard e estilização", "Análise Temporal, de Distribuição e Categórica", "Vídeo"]},
+    {"nome": "Lorena Oliveira", "imagem": Lorena, "funcoes": ["Pesquisa", "Relatório", "Roteiro", "Vídeo"]},
+    {"nome": "Rodrigo Levino", "imagem": Rodrigo, "funcoes": ["Roteiro", "Análise Temporal", "Vídeo"]},
+    {"nome": "Ruan Gois", "imagem": Ruan, "funcoes": ["Análise de Relação", "Roteiro"]}
+]
+
+    # Título principal
+    st.markdown(""" 
+        <h2 style="font-size: 40px; text-align: center;">
+            Informações do grupo
+        </h2>
+    """, unsafe_allow_html=True)
+
+    st.markdown("---")
+
+    st.markdown(""" 
+        <h2 style="font-size: 40px; text-align: center;">
+            Integrantes do 1-Bit
+        </h2>
+        """, unsafe_allow_html=True)
+
+    # Exibir todos os integrantes
+    for integrante in integrantes:
+        # Exibir a imagem
+        st.markdown(f"""
+        <div style="text-align: left; display: flex; align-items: center; margin-bottom: 20px;">
+            <img src="data:image/png;base64,{integrante['imagem']}"
+                style="width: 16%; max-width: 150px; border-radius: 10px; box-shadow: 5px 5px 15px rgba(0,0,0,0.3);"
+                alt="Foto de {integrante['nome']}">
+            <div style="margin-left: 15px;">
+                <h4 style="font-size: 25px; text-align: justify;">
+                    {integrante['nome']}
+                </h4>
+                <ul style="font-size: 16px; list-style-type: disc; padding-left: 20px;">
+                    {''.join([f"<li>{funcao}</li>" for funcao in integrante["funcoes"]])}
+                </ul>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)

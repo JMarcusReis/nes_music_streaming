@@ -5,17 +5,12 @@ import numpy as np
 import seaborn as sns
 import time
 from matplotlib.patches import ConnectionPatch
-import matplotlib
-
-matplotlib.use('Agg')
 
 df = pd.read_csv(r'C:\Users\reis_\Downloads\music_streaming.csv')
 df['date'], df['time'] = pd.to_datetime(df['date'], format='%Y-%m-%d'), pd.to_datetime(df['time'], format='%H:%M:%S')
 df['month'], df['hour'] = df['date'].dt.month, df['time'].dt.hour
-df = df.drop_duplicates(subset='user_id')
 
 def show_picos_idade():
-    st.subheader('Histograma de Horários de Pico')
     # Criando a figura e os eixos
     fig, ax = plt.subplots(figsize=(12, 6))
     # Gera o histograma no eixo 'ax'
@@ -31,9 +26,11 @@ def show_picos_idade():
     ax.grid(axis='y', alpha=0.75)
     # Exibe o gráfico
     st.pyplot(fig)
+    st.write("""
+    
+    """)
 
 def show_genres():
-    st.subheader('Gráfico de pizza sobre os gêneros')
     # Criando a figura e os eixos
     fig, ax = plt.subplots(figsize=(8, 8))  # Tamanho da figura
     # Definindo as cores para o gráfico de pizza
@@ -52,7 +49,6 @@ def show_genres():
     st.pyplot(fig)
 
 def show_subgenres():
-    st.subheader('Gráfico de pizza sobre os subgêneros')
     # Criando a figura e os eixos com o tamanho especificado
     fig, ax = plt.subplots(figsize=(20, 18))
     colors = ['#ff9999','#66b3ff','#99ff99','#ffcc99','#c2c2f0', '#ffcc00'] # Cria a lista colors para ser adicionadas no gráfico
@@ -76,7 +72,6 @@ def show_subgenres():
     st.pyplot(fig)
 
 def show_liked():
-    st.subheader('Gráfico de pizza sobre likes nas reproduções')
     # Criando a figura e os eixos com o tamanho especificado
     fig, ax = plt.subplots(figsize=(8, 8)) 
     # Definindo colors e explode
@@ -100,7 +95,6 @@ def show_liked():
     st.pyplot(fig)
 
 def show_streamqual():
-    st.subheader('Gráfico de barras vertical sobre qualidade dos streams')
     # Criando a figura e os eixos com o tamanho especificado
     fig, ax = plt.subplots(figsize=(8, 8))
     # Gera o gráfico
@@ -116,7 +110,6 @@ def show_streamqual():
     st.pyplot(fig)
 
 def show_subtypes():
-    st.subheader('Gráfico de barras horizontal sobre tipos de inscrições')
     # Criando a figura e os eixos com o tamanho especificado
     fig, ax = plt.subplots(figsize=(8, 8))
     # Gera o gráfico
@@ -131,12 +124,13 @@ def show_subtypes():
     st.pyplot(fig)
 
 def show_platf():
+    df2 = df.drop_duplicates(subset='user_id')
     st.subheader('Gráfico de Pizza sobre plataforma das reproduções')
     # Criando a figura e os eixos com o tamanho especificado
     fig, ax = plt.subplots(figsize=(12, 8))
     # Gera o gráfico
-    ax.pie(df['platform'].value_counts(), 
-            labels=df['platform'].unique(), 
+    ax.pie(df2['platform'].value_counts(), 
+            labels=df2['platform'].unique(), 
             autopct='%1.1f%%', startangle=90,
             shadow=True)
     # Customizações
@@ -148,7 +142,6 @@ def show_platf():
     st.pyplot(fig)
 
 def show_month():
-    st.subheader('Gráfico de linha sobre mês das reproduções')
     
     # Criando a figura e os eixos com o tamanho especificado
     fig, ax = plt.subplots(figsize=(12 * 1.5, 6 * 1.5))
@@ -230,16 +223,21 @@ def show_comp1():
     st.pyplot(fig)  # Exibindo a figura com Streamlit, sem a necessidade de plt.show()
 
 def show_comp2():
+    liked_count = df['liked'].value_counts()  # Conta o número de True (curtidas) e False (não curtidas)
+    # Gráficos
     fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(9, 5))
     fig.subplots_adjust(wspace=0)
-    # Gráfico de pizza
-    overall_ratios = [4.8, 95.2]
-    labels = ['Online', 'Offline']
-    explode = [0, 0.1]
-    angle = -80 * overall_ratios[0]
-    wedges, *_ = ax1.pie(overall_ratios, autopct='%1.1f%%', startangle=angle,
+
+    # Gráfico de pizza para a distribuição de curtidas
+    liked_ratios = [liked_count[True], liked_count[False]]  # Número de curtidas (True) e não curtidas (False)
+    labels = ['Gostou', 'Não Gostou']
+    explode = [0, 0.1]  # Destacar a fatia de "Não Gostou" um pouco
+    angle = -80 * liked_ratios[0]  # Define o ângulo inicial para um melhor layout do gráfico
+
+    # Plotando o gráfico de pizza
+    wedges, *_ = ax1.pie(liked_ratios, autopct='%1.1f%%', startangle=angle,
                         labels=labels, explode=explode)
-    ax1.set_title("Uso no modo Online ou Offline")
+
     # Gráfico de barra
     age_ratios = [.2105, .2105, .1842, .1842, .1315, .0789]
     age_labels = ['16-24', '25-32', '33-40', '41-48', '49-56', '57-64']
@@ -274,4 +272,57 @@ def show_comp2():
     con.set_color([0, 0, 0])
     ax2.add_artist(con)
     con.set_linewidth(4)
+    st.pyplot(fig)
+
+def show_histidades():
+    intervalos = pd.cut(df['user_age'], bins=[15, 24, 32, 40, 48, 56, 64], labels=['16-24', '25-32', '33-40', '41-48', '49-56', '57-64'])
+    df['Faixa_Etaria'] = intervalos
+
+    # Contagem de usuários por faixa etária
+    faixa_etaria_count = df['Faixa_Etaria'].value_counts().sort_index()
+
+    # Criando o gráfico
+    fig, ax = plt.subplots(figsize=(12, 8))
+
+    # Gerando o histograma (na verdade, aqui estamos criando um gráfico de barras)
+    ax.bar(faixa_etaria_count.index, faixa_etaria_count.values, color='skyblue', edgecolor='black')
+
+    # Definindo títulos e rótulos
+    ax.set_title('Distribuição de Usuários por Faixa Etária', fontsize=16)
+    ax.set_xlabel('Faixa Etária', fontsize=12)
+    ax.set_ylabel('Número de Usuários', fontsize=12)
+    ax.grid(False)
+    ax.axhline(y=faixa_etaria_count.mean(), color='red', linestyle='--', label=f'Média: {faixa_etaria_count.mean():.2f}')
+    plt.tight_layout()
+    plt.legend(fontsize=12)
+    # Exibindo o gráfico no Streamlit
+    st.pyplot(fig)
+
+def show_musicduration():
+    # Criando a figura e os eixos
+    fig, ax = plt.subplots(figsize=(10, 6))
+
+    # Criando o histograma para a coluna 'duration_seconds' do dataframe
+    ax.hist(df['duration_seconds'], bins=30, color='orange', edgecolor='black')
+
+    # Adicionando título e rótulos aos eixos
+    ax.set_title('Distribuição da Duração das Músicas em Segundos', fontsize=16)
+    ax.set_xlabel('Duração (Segundos)', fontsize=14)
+    ax.set_ylabel('Frequência', fontsize=14)
+
+    # Cálculo da média da frequência (média da quantidade de músicas em cada intervalo de tempo do histograma)
+    hist_values, bin_edges = np.histogram(df['duration_seconds'], bins=30)
+    mean_freq = np.mean(hist_values)
+
+    # Adicionando uma linha horizontal para a média da frequência
+    plt.axhline(mean_freq, color='darkblue', linestyle='dashed', linewidth=2, label=f'Média da Frequência: {mean_freq:.1f}')
+
+    # Adicionando a legenda
+    ax.legend()
+
+    # Ajustando layout
+    plt.tight_layout()
+    ax.grid(False)
+
+    # Exibindo o gráfico
     st.pyplot(fig)
