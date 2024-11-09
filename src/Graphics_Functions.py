@@ -3,7 +3,6 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
 import seaborn as sns
-import time
 from matplotlib.patches import ConnectionPatch
 
 df = pd.read_csv(r'C:\Users\reis_\Downloads\music_streaming.csv')
