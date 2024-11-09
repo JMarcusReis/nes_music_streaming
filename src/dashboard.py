@@ -51,6 +51,9 @@ Lorena = img_to_base64(Lorena)
 Rodrigo = r"C:\Users\reis_\Desktop\Codes\.vscode\Python\NES\P_P\Trabalho_1\nes_music_streaming\src\assets\Rodrigo.png"
 Rodrigo = img_to_base64(Rodrigo)
 
+img5 = r"C:\Users\reis_\Desktop\Codes\.vscode\Python\NES\P_P\Trabalho_1\nes_music_streaming\src\assets\Contexto de mercado.png"
+img5 = img_to_base64(img5)
+
 # HTML para a exibição do logo Onebit
 onebit_logo = f"""
     <div style="text-align: center; padding: 20px;">
@@ -76,6 +79,7 @@ st.sidebar.title('Central de comando')
 # Opções de gráficos
 graph_options = [
     'Introdução',
+    'Contexto de mercado',
     'Análise temporal',
     'Análise de Distribuição',
     'Análise de Relacionamento',
@@ -104,6 +108,25 @@ if atual == 'Introdução':
             sem problemas. Pensando nisso, visando a obtenção de melhores resultados de recomendação, o grupo 1-Bit, 
             busca a excelência em resultados de plataformas de streaming de música idealizou o Algoritmo Personalizado.
         </h4>""", unsafe_allow_html=True)
+
+elif atual == 'Contexto de mercado':
+    st.markdown("""
+        <h2 style="font-size: 40px; text-align: left;">Contexto de mercado</h2>
+    """, unsafe_allow_html=True)
+    st.markdown("---")
+    col1, col2 = st.columns([1, 3])
+    st.markdown("""<h4 style="font-size: 25px; text-align: justify;">
+            O mercado de streaming de música está em crescimento acelerado, com plataformas como Spotify e 
+                Apple Music liderando, alcançando mais de 600 milhões de usuários em 2023. A receita global deve superar os 
+                30 bilhões de dólares até 2025, transformando o consumo musical e a indústria como um todo.
+        </h4>""", unsafe_allow_html=True)
+    st.markdown("""<h4 style="font-size: 25px; text-align: justify;">
+                Este projeto visa explorar dados de plataformas de streaming por meio de um dashboard interativo em Streamlit.
+                Ele oferece análises sobre comportamentos dos usuários, como picos de reprodução, preferências por faixas etárias
+                 e gêneros musicais, e propõe soluções para melhorar recomendações, como os sistemas utilizados por gigantes do mercado, como o Spotify.
+            </h4>""", unsafe_allow_html=True)
+    
+
 
 # Se o usuário escolheu qualquer gráfico do dataset
 elif atual == 'Análise temporal':
@@ -171,7 +194,7 @@ elif atual == 'Análise de Distribuição':
 
     st.markdown("""
         <h2 style="font-size: 40px; text-align: left;">
-            Histograma de reproduções por faixa etária
+            Histograma de número de usuários por faixa etária
         </h2>
     """, unsafe_allow_html=True)
     graf.show_histidades()  # Chama a função para exibir o histograma
@@ -181,7 +204,7 @@ elif atual == 'Análise de Distribuição':
         <h2 style="font-size: 40px; text-align: left;">Observações</h2>
     """, unsafe_allow_html=True)
     st.markdown("""
-        Faixas etárias que mais reproduzem músicas:
+        Faixas etárias que mais tem usuários:
         1) 16-24 anos
         2) 41-48 anos
         3) 57-64 anos
@@ -297,19 +320,6 @@ elif atual == 'Análise Categórica':
     st.markdown("""
     Podemos ver que os gêneros Pop, MPB e Rock são os mais escutados no geral, 
     com porcentagens de 22.1%, 20.9% e 18.7% respectivamente
-    """)
-    st.markdown("---")
-
-    st.markdown("""
-        <h2 style="font-size: 40px; text-align: left;">Subgêneros mais escutados</h2>
-    """, unsafe_allow_html=True)
-    graf.show_subgenres()
-    st.markdown("""
-        <h2 style="font-size: 40px; text-align: left;">Observações</h2>
-    """, unsafe_allow_html=True)
-    st.markdown("""
-    Podemos ver que o Kpop, Forró e Alternative são os subgêneros mais escutados no geral,
-    com porcentagens de 8.2%, 7.1% e 6.9% respectivamente.
     """)
     st.markdown("---")
     st.markdown("""
@@ -432,9 +442,9 @@ elif atual == 'Solução':
 elif atual == 'Informações sobre o grupo':
     integrantes = [
     {"nome": "Gustavo Felipe", "imagem": Gustavo, "funcoes": ["Relatório", "Roteiro"]},
-    {"nome": "João Marcus", "imagem": Joao, "funcoes": ["Repositório", "Dashboard e estilização", "Análise Temporal, de Distribuição e Categórica", "Vídeo"]},
-    {"nome": "Lorena Oliveira", "imagem": Lorena, "funcoes": ["Pesquisa", "Relatório", "Roteiro", "Vídeo"]},
-    {"nome": "Rodrigo Levino", "imagem": Rodrigo, "funcoes": ["Roteiro", "Análise Temporal", "Vídeo"]},
+    {"nome": "João Marcus", "imagem": Joao, "funcoes": ["Repositório", "Dashboard e estilização", "Análise Temporal, de Distribuição e Categórica"]},
+    {"nome": "Lorena Oliveira", "imagem": Lorena, "funcoes": ["Pesquisa", "Relatório", "Roteiro"]},
+    {"nome": "Rodrigo Levino", "imagem": Rodrigo, "funcoes": ["Roteiro", "Análise Temporal"]},
     {"nome": "Ruan Gois", "imagem": Ruan, "funcoes": ["Análise de Relação", "Roteiro"]}
 ]
 
